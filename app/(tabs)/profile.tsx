@@ -1,11 +1,27 @@
 import { View, Text, StyleSheet, Image, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
+import { useTheme } from '../context/ThemeContext';
 
 const ACHIEVEMENTS = [
-  { id: '1', title: 'Early Bird', description: 'Completed 5 morning sessions', icon: '🌅' },
-  { id: '2', title: 'Zen Master', description: 'Practiced for 30 days straight', icon: '🧘‍♀️' },
-  { id: '3', title: 'Flow State', description: 'Completed first advanced course', icon: '⭐' },
+  {
+    id: '1',
+    title: 'Early Bird',
+    description: 'Completed 5 morning sessions',
+    icon: '🌅',
+  },
+  {
+    id: '2',
+    title: 'Zen Master',
+    description: 'Practiced for 30 days straight',
+    icon: '🧘‍♀️',
+  },
+  {
+    id: '3',
+    title: 'Flow State',
+    description: 'Completed first advanced course',
+    icon: '⭐',
+  },
 ];
 
 const STATS = [
@@ -15,53 +31,88 @@ const STATS = [
 ];
 
 export default function ProfileScreen() {
+  const { isDarkMode, toggleTheme, theme } = useTheme();
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: theme.background }]}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <View style={styles.profileHeader}>
             <Image
-              source={{ uri: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&auto=format&fit=crop' }}
+              source={{
+                uri: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=400&auto=format&fit=crop',
+              }}
               style={styles.profileImage}
             />
             <View style={styles.profileInfo}>
-              <Text style={styles.name}>Emma Wilson</Text>
+              <Text style={[styles.name, { color: theme.text }]}>
+                Agwu Ezekiel
+              </Text>
               <Text style={styles.level}>Intermediate Yogi</Text>
             </View>
           </View>
         </View>
 
         <View style={styles.statsContainer}>
-          {STATS.map(stat => (
-            <View key={stat.id} style={styles.statCard}>
-              <Text style={styles.statValue}>{stat.value}</Text>
-              <Text style={styles.statTitle}>{stat.title}</Text>
+          {STATS.map((stat) => (
+            <View
+              key={stat.id}
+              style={[styles.statCard, { backgroundColor: theme.card }]}
+            >
+              <Text style={[styles.statValue, { color: theme.text }]}>
+                {stat.value}
+              </Text>
+              <Text style={[styles.statTitle, { color: theme.text }]}>
+                {stat.title}
+              </Text>
             </View>
           ))}
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Achievements</Text>
+          <Text style={[styles.sectionTitle, { color: theme.text }]}>
+            Achievements
+          </Text>
           <View style={styles.achievementsContainer}>
-            {ACHIEVEMENTS.map(achievement => (
-              <View key={achievement.id} style={styles.achievementCard}>
-                <Text style={styles.achievementIcon}>{achievement.icon}</Text>
-                <Text style={styles.achievementTitle}>{achievement.title}</Text>
-                <Text style={styles.achievementDescription}>{achievement.description}</Text>
+            {ACHIEVEMENTS.map((achievement) => (
+              <View
+                key={achievement.id}
+                style={[
+                  styles.achievementCard,
+                  { backgroundColor: theme.card },
+                ]}
+              >
+                <Text style={[styles.achievementIcon, { color: theme.text }]}>
+                  {achievement.icon}
+                </Text>
+                <Text style={[styles.achievementTitle, { color: theme.text }]}>
+                  {achievement.title}
+                </Text>
+                <Text
+                  style={[styles.achievementDescription, { color: theme.text }]}
+                >
+                  {achievement.description}
+                </Text>
               </View>
             ))}
           </View>
         </View>
 
         <View style={styles.section}>
-          <Text style={styles.sectionTitle}>Goals</Text>
-          <View style={styles.goalCard}>
+          <Text style={[styles.sectionTitle, { color: theme.text }]}>
+            Goals
+          </Text>
+          <View style={[styles.goalCard, { backgroundColor: theme.card }]}>
             <View style={styles.goalHeader}>
-              <Text style={styles.goalTitle}>Practice 5 times this week</Text>
+              <Text style={[styles.goalTitle, { color: theme.text }]}>
+                Practice 5 times this week
+              </Text>
               <Text style={styles.goalProgress}>3/5</Text>
             </View>
             <View style={styles.progressBar}>
-              <View style={[styles.progressFill, { width: '60%' }]} />
+              <View style={[styles.progressFill, { width: '70%' }]} />
             </View>
           </View>
         </View>

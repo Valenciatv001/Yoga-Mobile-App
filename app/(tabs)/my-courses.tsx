@@ -1,7 +1,16 @@
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity, ScrollView } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Image,
+  TouchableOpacity,
+  ScrollView,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
+import { useTheme } from '../context/ThemeContext';
 
 const IN_PROGRESS_COURSES = [
   {
@@ -9,20 +18,26 @@ const IN_PROGRESS_COURSES = [
     title: 'Morning Flow Yoga',
     progress: 0.6,
     nextLesson: 'Sun Salutation B',
-    image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&auto=format&fit=crop'
+    image:
+      'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&auto=format&fit=crop',
   },
   {
     id: '2',
     title: 'Power Vinyasa',
     progress: 0.3,
     nextLesson: 'Standing Poses',
-    image: 'https://images.unsplash.com/photo-1588286840104-8957b019727f?w=800&auto=format&fit=crop'
+    image:
+      'https://images.unsplash.com/photo-1588286840104-8957b019727f?w=800&auto=format&fit=crop',
   },
 ];
 
 export default function MyCoursesScreen() {
+  const { isDarkMode, toggleTheme, theme } = useTheme();
+
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: theme.background }]}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
           <Text style={styles.title}>My Courses</Text>
@@ -50,24 +65,40 @@ export default function MyCoursesScreen() {
             renderItem={({ item }) => (
               <Link href={`/course/${item.id}`} asChild>
                 <TouchableOpacity style={styles.courseCard}>
-                  <Image source={{ uri: item.image }} style={styles.courseImage} />
+                  <Image
+                    source={{ uri: item.image }}
+                    style={styles.courseImage}
+                  />
                   <View style={styles.courseInfo}>
                     <Text style={styles.courseTitle}>{item.title}</Text>
                     <View style={styles.progressContainer}>
                       <View style={styles.progressBar}>
-                        <View style={[styles.progressFill, { width: `${item.progress * 100}%` }]} />
+                        <View
+                          style={[
+                            styles.progressFill,
+                            { width: `${item.progress * 100}%` },
+                          ]}
+                        />
                       </View>
-                      <Text style={styles.progressText}>{Math.round(item.progress * 100)}%</Text>
+                      <Text style={styles.progressText}>
+                        {Math.round(item.progress * 100)}%
+                      </Text>
                     </View>
                     <View style={styles.nextLesson}>
-                      <Ionicons name="play-circle-outline" size={20} color="#7C3AED" />
-                      <Text style={styles.nextLessonText}>Next: {item.nextLesson}</Text>
+                      <Ionicons
+                        name="play-circle-outline"
+                        size={20}
+                        color="#7C3AED"
+                      />
+                      <Text style={styles.nextLessonText}>
+                        Next: {item.nextLesson}
+                      </Text>
                     </View>
                   </View>
                 </TouchableOpacity>
               </Link>
             )}
-            keyExtractor={item => item.id}
+            keyExtractor={(item) => item.id}
           />
         </View>
       </ScrollView>

@@ -1,14 +1,17 @@
 import { Tabs } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
-import { Platform } from 'react-native';
+import { Platform, View } from 'react-native';
+import { useTheme } from '../context/ThemeContext';
 
 export default function TabLayout() {
+  const { isDarkMode, toggleTheme, theme } = useTheme();
+
   return (
     <Tabs
       screenOptions={{
         headerShown: false,
         tabBarStyle: {
-          backgroundColor: '#fff',
+          backgroundColor: theme.background || '#F9FAFB',
           borderTopWidth: 1,
           borderTopColor: '#e5e5e5',
           paddingBottom: Platform.OS === 'ios' ? 20 : 10,

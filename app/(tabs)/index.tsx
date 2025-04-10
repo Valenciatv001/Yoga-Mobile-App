@@ -1,10 +1,24 @@
 import { useState } from 'react';
-import { View, Text, StyleSheet, ScrollView, Image, TextInput, TouchableOpacity, FlatList } from 'react-native';
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  FlatList,
+} from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Ionicons } from '@expo/vector-icons';
 import { Link } from 'expo-router';
+import { useTheme } from '@/app/context/ThemeContext';
 
-const CATEGORIES = [
+const CATEGORIES: {
+  id: string;
+  name: string;
+  icon: 'grid-outline' | 'leaf-outline' | 'flame-outline' | 'flash-outline';
+}[] = [
   { id: '1', name: 'All', icon: 'grid-outline' },
   { id: '2', name: 'Beginner', icon: 'leaf-outline' },
   { id: '3', name: 'Intermediate', icon: 'flame-outline' },
@@ -18,7 +32,8 @@ const FEATURED_COURSES = [
     instructor: 'Sarah Johnson',
     duration: '45 min',
     level: 'Beginner',
-    image: 'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&auto=format&fit=crop'
+    image:
+      'https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=800&auto=format&fit=crop',
   },
   {
     id: '2',
@@ -26,23 +41,45 @@ const FEATURED_COURSES = [
     instructor: 'Michael Chen',
     duration: '60 min',
     level: 'Intermediate',
-    image: 'https://images.unsplash.com/photo-1588286840104-8957b019727f?w=800&auto=format&fit=crop'
+    image:
+      'https://images.unsplash.com/photo-1588286840104-8957b019727f?w=800&auto=format&fit=crop',
   },
 ];
 
 export default function ExploreScreen() {
   const [selectedCategory, setSelectedCategory] = useState('1');
+  const { isDarkMode, toggleTheme, theme } = useTheme();
+  const backgroundColor = isDarkMode ? theme.background : '#F9FAFB';
+  const textColor = isDarkMode ? theme.text : '#111827';
+  const cardColor = isDarkMode ? theme.card : '#FFFFFF';
+  const borderColor = isDarkMode ? theme.border : '#E5E7EB';
+  const primaryColor = isDarkMode ? theme.primary : '#7C3AED';
+  const shadowColor = isDarkMode ? '#000' : '#000';
+  const shadowOpacity = isDarkMode ? 0.1 : 0.05;
+  const shadowRadius = isDarkMode ? 6 : 4;
+  const shadowOffset = { width: 0, height: 2 };
+  const elevation = isDarkMode ? 4 : 2;
+  const color = isDarkMode ? '#F9FAFB' : '#111827';
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: theme.background }]}
+    >
       <ScrollView showsVerticalScrollIndicator={false}>
         <View style={styles.header}>
-          <Text style={styles.greeting}>Good morning</Text>
-          <Text style={styles.name}>Emma</Text>
+          <Text style={[styles.greeting, { color: theme.text }]}>
+            Good morning
+          </Text>
+          <Text style={[styles.name, { color: theme.text }]}>Ezekiel</Text>
         </View>
 
         <View style={styles.searchContainer}>
-          <Ionicons name="search" size={20} color="#6B7280" style={styles.searchIcon} />
+          <Ionicons
+            name="search"
+            size={20}
+            color="#6B7280"
+            style={styles.searchIcon}
+          />
           <TextInput
             style={styles.searchInput}
             placeholder="Search courses..."
@@ -50,7 +87,12 @@ export default function ExploreScreen() {
           />
         </View>
 
-        <View style={styles.categoriesContainer}>
+        <View
+          style={[
+            styles.categoriesContainer,
+            { backgroundColor: theme.background },
+          ]}
+        >
           <FlatList
             data={CATEGORIES}
             horizontal
@@ -61,7 +103,8 @@ export default function ExploreScreen() {
                   styles.categoryButton,
                   selectedCategory === item.id && styles.categoryButtonActive,
                 ]}
-                onPress={() => setSelectedCategory(item.id)}>
+                onPress={() => setSelectedCategory(item.id)}
+              >
                 <Ionicons
                   name={item.icon}
                   size={20}
@@ -71,17 +114,20 @@ export default function ExploreScreen() {
                   style={[
                     styles.categoryText,
                     selectedCategory === item.id && styles.categoryTextActive,
-                  ]}>
+                  ]}
+                >
                   {item.name}
                 </Text>
               </TouchableOpacity>
             )}
-            keyExtractor={item => item.id}
+            keyExtractor={(item) => item.id}
           />
         </View>
 
         <View style={styles.sectionHeader}>
-          <Text style={styles.sectionTitle}>Featured Courses</Text>
+          <Text style={[styles.sectionTitle, { color: theme.text }]}>
+            Featured Courses
+          </Text>
           <TouchableOpacity>
             <Text style={styles.seeAll}>See All</Text>
           </TouchableOpacity>
@@ -94,9 +140,12 @@ export default function ExploreScreen() {
           renderItem={({ item }) => (
             <Link href={`/course/${item.id}`} asChild>
               <TouchableOpacity style={styles.courseCard}>
-                <Image source={{ uri: item.image }} style={styles.courseImage} />
+                <Image
+                  source={{ uri: item.image }}
+                  style={styles.courseImage}
+                />
                 <View style={styles.courseInfo}>
-                  <Text style={styles.courseTitle}>{item.title}</Text>
+                  <Text style={[styles.courseTitle]}>{item.title}</Text>
                   <Text style={styles.courseInstructor}>{item.instructor}</Text>
                   <View style={styles.courseMetaContainer}>
                     <View style={styles.courseMeta}>
@@ -104,7 +153,11 @@ export default function ExploreScreen() {
                       <Text style={styles.courseMetaText}>{item.duration}</Text>
                     </View>
                     <View style={styles.courseMeta}>
-                      <Ionicons name="stats-chart-outline" size={14} color="#6B7280" />
+                      <Ionicons
+                        name="stats-chart-outline"
+                        size={14}
+                        color="#6B7280"
+                      />
                       <Text style={styles.courseMetaText}>{item.level}</Text>
                     </View>
                   </View>
@@ -112,7 +165,7 @@ export default function ExploreScreen() {
               </TouchableOpacity>
             </Link>
           )}
-          keyExtractor={item => item.id}
+          keyExtractor={(item) => item.id}
           style={styles.coursesList}
         />
       </ScrollView>
